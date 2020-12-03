@@ -16,6 +16,6 @@ export interface UserApi1 {
     updateEntry(journalId: string, entryId:string, entryData: EntryMutable): Promise<ActionResponse<Entry>>,
     deleteEntry(journalId: string, entryId:string): Promise<ActionResponse<Entry>>,
     createTag(journalId: string, entryId:string, tags:string[]): Promise<ActionResponse<Tag[]>>
-    getTags(journalId: string, entryId:string): Promise<ActionResponse<Tag[]>>
+    getTags(journalId: string, entryId:string): Promise<ActionResponse<TagDescription>>
     deleteTags(journalId: string, entryId:string, tag:string): Promise<ActionResponse<TagDescription>>
 }
