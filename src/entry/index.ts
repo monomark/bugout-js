@@ -74,8 +74,8 @@ const getEntriesByJournal = async (
     journalId: string,
 ): Promise<ActionResponse<Entry[]>> => {
     try {
-        const entriesResponse = await spireClient.get<Entry[]>(`/journals/${journalId}/entries`)
-        return {data: entriesResponse.data}
+        const entriesResponse = await spireClient.get<{entries: Entry[]}>(`/journals/${journalId}/entries`)
+        return {data: entriesResponse.data.entries}
     } catch(e) {
         throw {
             error: e.response.data,
