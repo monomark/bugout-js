@@ -12,6 +12,6 @@ export type Entry = {
 }
 
 export type EntryMutable = {
-    title: Entry['title'];
-    content: Entry['content'];
+    title: string;
+    content: string;
 }

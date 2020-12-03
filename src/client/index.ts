@@ -3,17 +3,8 @@ import * as querystring from 'querystring'
 import {User, Pong, Options, Auth} from './types'
 import ClientInterface from './interface'
 import createUserAPI from '../user'
+import {handleError} from './helper'
 
-
-const handleError = (e: any) => {
-    if(e.response) {
-        return {
-            ...e.response,
-            status: e.response.status,
-            body: {},
-        }
-    }
-}
 
 const BugoutClient = (
     bugoutToken: string | null,
@@ -74,10 +65,14 @@ const BugoutClient = (
             return verificationResponse.data
         }
         catch (e) {
-            throw e.response.data
+            if(e.response.status === 401) {
+                throw 'Set token first'
+            } else {
+                throw e.response
+            }
         }
     }
-    const login = async (username: User['username'], password: string): Promise<Auth> => {
+    const login = async (username: string, password: string): Promise<Auth> => {
         const loginUser = querystring.stringify({
             username,
             password

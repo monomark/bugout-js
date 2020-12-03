@@ -5,13 +5,13 @@ import {Options} from './client/types'
 
 
 const module = (
-    bugoutToken: string | null,
-    bugoutClientID: string | null,
+    clientID: string | null,
+    token: string | null,
     options: Options = {
         apiUrls: {broodURL: BROODURL, spireURL: SPIREURL}
     },
 ): ClientInterface => (
-    Client(bugoutClientID, bugoutToken, options)
+    Client(clientID, token, options)
 )
 
 export {module as BugoutClient}

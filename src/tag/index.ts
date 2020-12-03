@@ -10,8 +10,8 @@ export const createTags = async (
     tagName: string[],
 ): Promise<ActionResponse<Tag[]>> =>{
     try { 
-        const entryResponse = await spireClient.post<Tag[]>(`/journals/${journalId}/entries/${entryId}/tags`, {tags: tagName})
-        return {data: entryResponse.data}
+        const tagResponse = await spireClient.post<Tag[]>(`/journals/${journalId}/entries/${entryId}/tags`, {tags: tagName})
+        return {data: tagResponse.data}
     } catch(e) {
         throw {
             error: e.response.data,
@@ -26,8 +26,8 @@ export const getTags = async (
     entryId: string,
 ): Promise<ActionResponse<Tag[]>> =>{
     try { 
-        const entryResponse = await spireClient.get<Tag[]>(`/journals/${journalId}/entries/${entryId}/tags`)
-        return {data: entryResponse.data}
+        const tagResponse = await spireClient.get<Tag[]>(`/journals/${journalId}/entries/${entryId}/tags`)
+        return {data: tagResponse.data}
     } catch(e) {
         throw {
             error: e.response.data,
@@ -44,14 +44,14 @@ export const deleteTags = async (
     tagName: string,
 ): Promise<ActionResponse<TagDescription>> =>{
     try { 
-        const entryResponse = await spireClient.request<TagDescription>({
+        const tagResponse = await spireClient.request<TagDescription>({
             method: 'DELETE',
             url: `/journals/${journalId}/entries/${entryId}/tags`,
             data: {
                 tag: tagName
             }
         })
-        return {data: entryResponse.data}
+        return {data: tagResponse.data}
     } catch(e) {
         throw {
             error: e,
