@@ -10,8 +10,8 @@ export const createTags = async (
     tagName: string[],
 ): Promise<ActionResponse<Tag[]>> =>{
     try { 
-        const tagResponse = await spireClient.post<Tag[]>(`/journals/${journalId}/entries/${entryId}/tags`, {tags: tagName})
-        return {data: tagResponse.data}
+        const tagResponse = await spireClient.post<string[]>(`/journals/${journalId}/entries/${entryId}/tags`, {tags: tagName})
+        return {data: tagResponse.data.map(tag => ({name: tag}))}
     } catch(e) {
         throw {
             error: e.response.data,
@@ -24,9 +24,9 @@ export const getTags = async (
     spireClient: AxiosInstance, 
     journalId: string,
     entryId: string,
-): Promise<ActionResponse<Tag[]>> =>{
+): Promise<ActionResponse<TagDescription>> =>{
     try { 
-        const tagResponse = await spireClient.get<Tag[]>(`/journals/${journalId}/entries/${entryId}/tags`)
+        const tagResponse = await spireClient.get<TagDescription>(`/journals/${journalId}/entries/${entryId}/tags`)
         return {data: tagResponse.data}
     } catch(e) {
         throw {
