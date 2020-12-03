@@ -7,8 +7,8 @@ const getAllJournals = async (
     spireClient: AxiosInstance, 
 ): Promise<ActionResponse<Journal[]>> => {
     try {
-        const journalResponse = await spireClient.get<Journal[]>('/journals/')
-        return {data: journalResponse.data}
+        const journalResponse = await spireClient.get<{journals:Journal[]}>('/journals/')
+        return {data: journalResponse.data.journals}
     } catch(e) {
         console.log(e)
         throw {
