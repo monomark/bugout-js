@@ -5,7 +5,7 @@ import {Tag, TagDescription} from '../tag/type'
 export interface ActionResponse<T> {
     data: T;
 }
-export interface UserApi1 {
+export interface UserApi {
     getAllJournals(): Promise<ActionResponse<Journal[]>>, 
     createJournal(name: string): Promise<ActionResponse<Journal>>,
     deleteJournal(id: string): Promise<ActionResponse<Journal>>,
