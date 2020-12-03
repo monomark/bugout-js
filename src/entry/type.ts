@@ -1,4 +1,4 @@
-export interface Entry {
+export type Entry = {
     content: string;
     content_url: string | null;
     context_type: string;
@@ -11,7 +11,7 @@ export interface Entry {
     updated_at: string;
 }
 
-export interface EntryMutable {
+export type EntryMutable = {
     title: Entry['title'];
     content: Entry['content'];
 }

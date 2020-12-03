@@ -1,14 +1,14 @@
 import {AxiosInstance} from 'axios'
-import {
-    Journal
-} from './journal'
+import {Journal} from './type'
+import {JournalsAPI} from './interface'
+import {ActionResponse} from '../user/interface'
 
-export const getAllJournals = async (
+const getAllJournals = async (
     spireClient: AxiosInstance, 
-): Promise<Journal[]> => {
+): Promise<ActionResponse<Journal[]>> => {
     try {
-        const jurnalsResponse = await spireClient.get<Journal[]>('/journals/')
-        return jurnalsResponse.data
+        const journalResponse = await spireClient.get<Journal[]>('/journals/')
+        return {data: journalResponse.data}
     } catch(e) {
         console.log(e)
         throw {
@@ -18,13 +18,13 @@ export const getAllJournals = async (
         }
     }
 }
-export const createJournal = async (
+const createJournal = async (
     spireClient: AxiosInstance, 
     name: string
-): Promise<Journal> => {
+): Promise<ActionResponse<Journal>> => {
     try { 
         const journalResponse = await spireClient.post<Journal>(`/journals/`, {name})
-        return journalResponse.data
+        return {data: journalResponse.data}
     } catch(e) {
         throw {
             error: e.response.data,
@@ -33,13 +33,13 @@ export const createJournal = async (
         }
     }
 }
-export const deleteJournal = async (
+const deleteJournal = async (
     spireClient: AxiosInstance, 
     id: string
-): Promise<Journal> => {
+): Promise<ActionResponse<Journal>> => {
     try { 
         const journalResponse = await spireClient.delete<Journal>(`/journals/${id}`)
-        return journalResponse.data
+        return {data: journalResponse.data}
     } catch(e) {
         throw {
             error: e.response.data,
@@ -48,33 +48,13 @@ export const deleteJournal = async (
         }
     }
 }
-// export const getEntriesByJournal = async (
-//     spireClient: AxiosInstance, 
-//     journalId: string
-// ): Promise<Entry[]> => {
-//     try {
-//         const entriesResponse = await spireClient.get<Entry[]>(`/journals/${journalId}/entries`)
-//         return entriesResponse.data
-//     } catch(e) {
-//         throw {
-//             error: e.response.data,
-//             status: e?.response?.status,
-//             message: 'Error getEntries'
-//         }
-//     }
-// }
-// export const searchEntriesByJournal = async (
-//     spireClient: AxiosInstance, 
-//     journalId: string, query: string
-// ): Promise<Entry> => {
-//     try { 
-//         const entriesResponse = await spireClient.get<Entry>(`/journals/${journalId}/search?q=${query}`)
-//         return entriesResponse.data
-//     } catch(e) {
-//         throw {
-//             error: e.response.data,
-//             status: e?.response?.status,
-//             message: 'Error searchEntries'
-//         }
-//     }
-// }
+
+const createJournalsAPI = (spireClient: AxiosInstance):  JournalsAPI => (
+    {
+        getAllJournals: () => getAllJournals(spireClient),
+        createJournal: (name: string) => createJournal(spireClient, name),
+        deleteJournal: (id: string) => deleteJournal(spireClient, id),
+    }
+)
+
+export default createJournalsAPI

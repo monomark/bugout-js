@@ -1,52 +1,56 @@
 import axios, {AxiosInstance} from 'axios'
 import * as querystring from 'querystring'
-import {User, Auth, ApiUrls} from './bugoutClient'
-import getUser from '../user'
+import {User, Pong, Options, Auth} from './types'
+import ClientInterface from './interface'
+import createUserAPI from '../user'
 
 
-const hanldeError = (e: any) => {
+const handleError = (e: any) => {
     if(e.response) {
         return {
             ...e.response,
             status: e.response.status,
+            body: {},
         }
     }
 }
 
 const BugoutClient = (
-    ApiUrls: ApiUrls,
-    bugoutToken?: string,
-    bugoutClientID?: string, 
-    ) => {
+    bugoutToken: string | null,
+    bugoutClientID: string | null, 
+    options: Options,
+    ): ClientInterface => {
 // ToDo here must be request to auth api
-    const broodClient: AxiosInstance = axios.create({baseURL: ApiUrls.broodURL})
-    const spireClient: AxiosInstance = axios.create({baseURL: ApiUrls.spireURL})
-    let personalInformation: User
-    let authInfo: Auth
+    const broodClient: AxiosInstance = axios.create({baseURL: options.apiUrls.broodURL})
+    const spireClient: AxiosInstance = axios.create({baseURL: options.apiUrls.spireURL})
+    
 
-    const ping = async () => {
+    const ping = async (): Promise<Pong> => {
         const broodResponse = broodClient.get('/')
         const spireResponse = spireClient.get('/')
 
         const results = await Promise.all<any>([
-        broodResponse.catch(hanldeError),
-        spireResponse.catch(hanldeError),
+        broodResponse.catch(handleError),
+        spireResponse.catch(handleError),
     ])
 
     return {
         brood: {
             url: results[0].config.baseURL,
             code: results[0].status,
+            body: results[0].body
         },
         spire: {
             url: results[1].config.baseURL,
             code: results[1].status,
+            body: results[0].body
+
         }
     }
     }
     const createUser = async (
-        email: User['email'], 
-        username: User['username'], 
+        email: string, 
+        username: string, 
         password: string,
     ): Promise<User> => {
         const registrationForm = querystring.stringify({
@@ -63,7 +67,6 @@ const BugoutClient = (
         }
     }
     const verify = async (code: string): Promise<User> => {
-        if(!personalInformation || !authInfo) throw new Error('Token required, configurate token using setToken function')
 
         try {
             const verificationResponse = await broodClient.post<User>('/confirm');
@@ -82,27 +85,19 @@ const BugoutClient = (
     
         try {
             const authInfoResponse = await broodClient.post<Auth>('/token', loginUser);
-    
+            broodClient.defaults.headers['authorization'] = `Bearer ${authInfoResponse.data.access_token}`
+            spireClient.defaults.headers['authorization'] = `Bearer ${authInfoResponse.data.access_token}`
             return authInfoResponse.data;
         } catch(e) {
             throw e.response.data
         }
     }
 
-    const setToken = async (token: Auth['access_token']): Promise<boolean> => {
+    const setToken = (token: string): void => {
         
         try {
             broodClient.defaults.headers['authorization'] = `Bearer ${token}`
             spireClient.defaults.headers['authorization'] = `Bearer ${token}`
-            
-            const personalInfoResponse = await broodClient.get<User>('/user')
-            personalInformation = personalInfoResponse.data
-            authInfo = {
-                token_type: 'bearer',
-                access_token: token,
-            }
-            
-            return true 
 
         } catch (e) {
             throw e.response.data
@@ -115,7 +110,7 @@ const BugoutClient = (
             verify,
             login,
             setToken,
-            user: () => getUser(spireClient),
+            user: () => createUserAPI(spireClient),
         }
     
 }

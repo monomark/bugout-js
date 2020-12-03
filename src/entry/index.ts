@@ -1,15 +1,16 @@
-import {Entry, EntryMutable} from './entry'
-import {Journal} from '../journal/journal'
+import {Entry, EntryMutable} from './type'
+import {EntryAPI} from './interface'
 import {AxiosInstance} from 'axios'
+import {ActionResponse} from '../user/interface'
 
-export const getEntry = async (
+const getEntry = async (
     spireClient: AxiosInstance,
-    journalId: Journal['id'],
-    entryId: Entry['id'], 
-): Promise<Entry> => {
+    journalId: string,
+    entryId: string, 
+): Promise<ActionResponse<Entry>> => {
     try { 
         const entryResponse = await spireClient.get<Entry>(`/journals/${journalId}/entries/${entryId}`)
-        return entryResponse.data
+        return {data: entryResponse.data}
     } catch(e) {
         throw {
             error: e.response.data,
@@ -19,14 +20,14 @@ export const getEntry = async (
     }
 }
 
-export const createEntry = async (
+const createEntry = async (
     spireClient: AxiosInstance,
-    journalId: Journal['id'],
+    journalId: string,
     entryData: EntryMutable
-):Promise<Entry> => {
+):Promise<ActionResponse<Entry>> => {
     try { 
         const entryResponse = await spireClient.post<Entry>(`/journals/${journalId}/entries`, entryData)
-        return entryResponse.data
+        return {data: entryResponse.data}
     } catch(e) {
         throw {
             error: e.response.data,
@@ -35,15 +36,15 @@ export const createEntry = async (
         }
     }
 }
-export const updateEntry = async (
+const updateEntry = async (
     spireClient: AxiosInstance,
-    journalId: Journal['id'],
-    entryId: Entry['id'], 
+    journalId: string,
+    entryId: string, 
     entryData: EntryMutable
-): Promise<Entry> => {
+): Promise<ActionResponse<Entry>> => {
     try { 
         const entryResponse = await spireClient.put<Entry>(`/journals/${journalId}/entries/${entryId}`, entryData)
-        return entryResponse.data
+        return {data: entryResponse.data}
     } catch(e) {
         throw {
             error: e.response.data,
@@ -52,14 +53,14 @@ export const updateEntry = async (
         }
     }
 }
-export const deleteEntry = async (
+const deleteEntry = async (
     spireClient: AxiosInstance,
-    journalId: Journal['id'],
-    entryId: Entry['id'], 
-): Promise<Entry> => {
+    journalId: string,
+    entryId: string, 
+): Promise<ActionResponse<Entry>> => {
     try { 
         const entryResponse = await spireClient.delete<Entry>(`/journals/${journalId}/entries/${entryId}`)
-        return entryResponse.data
+        return {data: entryResponse.data}
     } catch(e) {
         throw {
             error: e.response.data,
@@ -68,13 +69,13 @@ export const deleteEntry = async (
         }
     }
 }
-export const getEntriesByJournal = async (
+const getEntriesByJournal = async (
     spireClient: AxiosInstance, 
-    journalId: Journal['id'],
-): Promise<Entry[]> => {
+    journalId: string,
+): Promise<ActionResponse<Entry[]>> => {
     try {
         const entriesResponse = await spireClient.get<Entry[]>(`/journals/${journalId}/entries`)
-        return entriesResponse.data
+        return {data: entriesResponse.data}
     } catch(e) {
         throw {
             error: e.response.data,
@@ -83,14 +84,14 @@ export const getEntriesByJournal = async (
         }
     }
 }
-export const searchEntriesByJournal = async (
+const searchEntriesByJournal = async (
     spireClient: AxiosInstance, 
-    journalId:  Journal['id'],
+    journalId:  string,
     query: string
-): Promise<Entry[]> => {
+): Promise<ActionResponse<Entry[]>> => {
     try { 
         const entriesResponse = await spireClient.get<Entry[]>(`/journals/${journalId}/search?q=${query}`)
-        return entriesResponse.data
+        return {data: entriesResponse.data}
     } catch(e) {
         throw {
             error: e.response.data,
@@ -99,3 +100,16 @@ export const searchEntriesByJournal = async (
         }
     }
 }
+
+const createEntryAPI = (spireClient: AxiosInstance): EntryAPI => (
+    {
+        getEntriesByJournal: (journalId: string) => getEntriesByJournal(spireClient, journalId),
+        searchEntriesByJournal: (journalId: string, query: string) => searchEntriesByJournal(spireClient, journalId, query),
+        getEntry: (journalId: string, entryId: string) => getEntry(spireClient, journalId, entryId),
+        createEntry: (journalId: string, entryData: EntryMutable) => createEntry(spireClient, journalId, entryData),
+        updateEntry: (journalId: string, entryId:string, entryData: EntryMutable) => updateEntry(spireClient, journalId, entryId, entryData),
+        deleteEntry: (journalId: string, entryId:string) => deleteEntry(spireClient, journalId, entryId),
+    }
+)
+
+export default createEntryAPI
