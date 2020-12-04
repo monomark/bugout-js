@@ -1,6 +1,6 @@
 import {
-    User, 
-    Pong, 
+    User,
+    Pong,
     Auth,
     Entry,
     EntryMutable,
@@ -28,7 +28,7 @@ export interface EntryAPI {
 }
 
 export interface JournalsAPI {
-    getAllJournals(): Promise<Response<Journal[]>>, 
+    getAllJournals(): Promise<Response<Journal[]>>,
     createJournal(name: string): Promise<Response<Journal>>,
     deleteJournal(id: string): Promise<Response<Journal>>,
 }
@@ -44,7 +44,7 @@ export interface Response<T> {
 }
 
 export interface UserApi {
-    getAllJournals(): Promise<Response<Journal[]>>, 
+    getAllJournals(): Promise<Response<Journal[]>>,
     createJournal(name: string): Promise<Response<Journal>>,
     deleteJournal(id: string): Promise<Response<Journal>>,
     getEntriesByJournal(journalId: string): Promise<Response<Entry[]>>,

@@ -1,17 +1,16 @@
-import {BROODURL, SPIREURL} from './constants'
+import { BROODURL, SPIREURL } from './constants'
 import Client from './client'
-import {ClientInterface} from "./interfaces";
-import {Options} from './types'
-
+import { ClientInterface } from './interfaces'
+import { Options } from './types'
 
 const module = (
-    clientID: string | null,
-    token: string | null,
     options: Options = {
-        apiUrls: {broodURL: BROODURL, spireURL: SPIREURL}
+        apiUrls: { broodURL: BROODURL, spireURL: SPIREURL },
     },
 ): ClientInterface => (
-    Client(clientID, token, options)
+    Client(options)
 )
 
-export {module as BugoutClient}
+export { module as BugoutClient }
+
+export default {}

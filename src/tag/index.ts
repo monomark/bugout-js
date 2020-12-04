@@ -1,62 +1,61 @@
-import {AxiosInstance} from 'axios'
-import {Tag, TagDescription} from '../types'
-import {TagAPI} from '../interfaces'
-import {Response} from '../interfaces'
+import { AxiosInstance } from 'axios'
+import { Tag, TagDescription } from '../types'
+import { TagAPI, Response } from '../interfaces'
 
 export const createTags = async (
-    spireClient: AxiosInstance, 
+    spireClient: AxiosInstance,
     journalId: string,
     entryId: string,
     tagName: string[],
-): Promise<Response<Tag[]>> =>{
-    try { 
-        const tagResponse = await spireClient.post<string[]>(`/journals/${journalId}/entries/${entryId}/tags`, {tags: tagName})
-        return {data: tagResponse.data.map(tag => ({name: tag}))}
-    } catch(e) {
+): Promise<Response<Tag[]>> => {
+    try {
+        const tagResponse = await spireClient.post<string[]>(`/journals/${journalId}/entries/${entryId}/tags`, { tags: tagName })
+        return { data: tagResponse.data.map((tag) => ({ name: tag })) }
+    } catch (e) {
         throw {
             error: e.response.data,
             status: e?.response?.status,
-            message: 'Error createTags'
+            message: 'Error createTags',
         }
     }
 }
 export const getTags = async (
-    spireClient: AxiosInstance, 
+    spireClient: AxiosInstance,
     journalId: string,
     entryId: string,
-): Promise<Response<TagDescription>> =>{
-    try { 
+): Promise<Response<TagDescription>> => {
+    try {
         const tagResponse = await spireClient.get<TagDescription>(`/journals/${journalId}/entries/${entryId}/tags`)
-        return {data: tagResponse.data}
-    } catch(e) {
+        return { data: tagResponse.data }
+    } catch (e) {
         throw {
             error: e.response.data,
             status: e?.response?.status,
-            message: 'Error getTags'
+            message: 'Error getTags',
         }
     }
 }
 
 export const deleteTags = async (
-    spireClient: AxiosInstance, 
+    spireClient: AxiosInstance,
     journalId: string,
     entryId: string,
     tagName: string,
-): Promise<Response<TagDescription>> =>{
-    try { 
+): Promise<Response<TagDescription>> => {
+    try {
         const tagResponse = await spireClient.request<TagDescription>({
             method: 'DELETE',
             url: `/journals/${journalId}/entries/${entryId}/tags`,
             data: {
-                tag: tagName
-            }
+                tag: tagName,
+            },
         })
-        return {data: tagResponse.data}
-    } catch(e) {
+        return { data: tagResponse.data }
+    } catch (e) {
         throw {
             error: e,
             status: e?.response?.status,
-            message: 'Error deleteTags'
+            message: 'Error deleteTags',
         }
     }
 }

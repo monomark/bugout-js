@@ -1,55 +1,53 @@
-import {AxiosInstance} from 'axios'
-import {Journal} from '../types'
-import {JournalsAPI} from '../interfaces'
-import {Response} from '../interfaces'
+import { AxiosInstance } from 'axios'
+import { Journal } from '../types'
+import { JournalsAPI, Response } from '../interfaces'
 
 const getAllJournals = async (
-    spireClient: AxiosInstance, 
+    spireClient: AxiosInstance,
 ): Promise<Response<Journal[]>> => {
     try {
         const journalResponse = await spireClient.get<{journals:Journal[]}>('/journals/')
-        return {data: journalResponse.data.journals}
-    } catch(e) {
-        console.log(e)
+        return { data: journalResponse.data.journals }
+    } catch (e) {
         throw {
             error: e.response.data,
             status: e?.response?.status,
-            message: 'Error getAllJournals'
+            message: 'Error getAllJournals',
         }
     }
 }
 const createJournal = async (
-    spireClient: AxiosInstance, 
-    name: string
+    spireClient: AxiosInstance,
+    name: string,
 ): Promise<Response<Journal>> => {
-    try { 
-        const journalResponse = await spireClient.post<Journal>(`/journals/`, {name})
-        return {data: journalResponse.data}
-    } catch(e) {
+    try {
+        const journalResponse = await spireClient.post<Journal>('/journals/', { name })
+        return { data: journalResponse.data }
+    } catch (e) {
         throw {
             error: e.response.data,
             status: e?.response?.status,
-            message: 'Error createJournal'
+            message: 'Error createJournal',
         }
     }
 }
 const deleteJournal = async (
-    spireClient: AxiosInstance, 
-    id: string
+    spireClient: AxiosInstance,
+    id: string,
 ): Promise<Response<Journal>> => {
-    try { 
+    try {
         const journalResponse = await spireClient.delete<Journal>(`/journals/${id}`)
-        return {data: journalResponse.data}
-    } catch(e) {
+        return { data: journalResponse.data }
+    } catch (e) {
         throw {
             error: e.response.data,
             status: e?.response?.status,
-            message: 'Error deleteJournal'
+            message: 'Error deleteJournal',
         }
     }
 }
 
-const createJournalsAPI = (spireClient: AxiosInstance):  JournalsAPI => (
+const createJournalsAPI = (spireClient: AxiosInstance): JournalsAPI => (
     {
         getAllJournals: () => getAllJournals(spireClient),
         createJournal: (name: string) => createJournal(spireClient, name),

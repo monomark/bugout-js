@@ -1,21 +1,20 @@
-import {Entry, EntryMutable} from '../types'
-import {EntryAPI} from '../interfaces'
-import {AxiosInstance} from 'axios'
-import {Response} from '../interfaces'
+import { AxiosInstance } from 'axios'
+import { Entry, EntryMutable } from '../types'
+import { EntryAPI, Response } from '../interfaces'
 
 const getEntry = async (
     spireClient: AxiosInstance,
     journalId: string,
-    entryId: string, 
+    entryId: string,
 ): Promise<Response<Entry>> => {
-    try { 
+    try {
         const entryResponse = await spireClient.get<Entry>(`/journals/${journalId}/entries/${entryId}`)
-        return {data: entryResponse.data}
-    } catch(e) {
+        return { data: entryResponse.data }
+    } catch (e) {
         throw {
             error: e.response.data,
             status: e?.response?.status,
-            message: 'Error getEntry'
+            message: 'Error getEntry',
         }
     }
 }
@@ -23,80 +22,80 @@ const getEntry = async (
 const createEntry = async (
     spireClient: AxiosInstance,
     journalId: string,
-    entryData: EntryMutable
+    entryData: EntryMutable,
 ):Promise<Response<Entry>> => {
-    try { 
+    try {
         const entryResponse = await spireClient.post<Entry>(`/journals/${journalId}/entries`, entryData)
-        return {data: entryResponse.data}
-    } catch(e) {
+        return { data: entryResponse.data }
+    } catch (e) {
         throw {
             error: e.response.data,
             status: e?.response?.status,
-            message: 'Error createEntry'
+            message: 'Error createEntry',
         }
     }
 }
 const updateEntry = async (
     spireClient: AxiosInstance,
     journalId: string,
-    entryId: string, 
-    entryData: EntryMutable
+    entryId: string,
+    entryData: EntryMutable,
 ): Promise<Response<Entry>> => {
-    try { 
+    try {
         const entryResponse = await spireClient.put<Entry>(`/journals/${journalId}/entries/${entryId}`, entryData)
-        return {data: entryResponse.data}
-    } catch(e) {
+        return { data: entryResponse.data }
+    } catch (e) {
         throw {
             error: e.response.data,
             status: e?.response?.status,
-            message: 'Error updateEntry'
+            message: 'Error updateEntry',
         }
     }
 }
 const deleteEntry = async (
     spireClient: AxiosInstance,
     journalId: string,
-    entryId: string, 
+    entryId: string,
 ): Promise<Response<Entry>> => {
-    try { 
+    try {
         const entryResponse = await spireClient.delete<Entry>(`/journals/${journalId}/entries/${entryId}`)
-        return {data: entryResponse.data}
-    } catch(e) {
+        return { data: entryResponse.data }
+    } catch (e) {
         throw {
             error: e.response.data,
             status: e?.response?.status,
-            message: 'Error deleteEntry'
+            message: 'Error deleteEntry',
         }
     }
 }
 const getEntriesByJournal = async (
-    spireClient: AxiosInstance, 
+    spireClient: AxiosInstance,
     journalId: string,
 ): Promise<Response<Entry[]>> => {
     try {
         const entriesResponse = await spireClient.get<{entries: Entry[]}>(`/journals/${journalId}/entries`)
-        return {data: entriesResponse.data.entries}
-    } catch(e) {
+        return { data: entriesResponse.data.entries }
+    } catch (e) {
         throw {
             error: e.response.data,
             status: e?.response?.status,
-            message: 'Error getEntries'
+            message: 'Error getEntries',
         }
     }
 }
 const searchEntriesByJournal = async (
-    spireClient: AxiosInstance, 
-    journalId:  string,
-    query: string
+    spireClient: AxiosInstance,
+    journalId: string,
+    query: string,
 ): Promise<Response<Entry[]>> => {
-    try { 
+    try {
         const entriesResponse = await spireClient.get<Entry[]>(`/journals/${journalId}/search?q=${query}`)
-        return {data: entriesResponse.data}
-    } catch(e) {
+        return { data: entriesResponse.data }
+    } catch (e) {
         throw {
             error: e.response.data,
             status: e?.response?.status,
-            message: 'Error searchEntries'
+            message: 'Error searchEntries',
         }
     }
 }

@@ -11,15 +11,17 @@ export type User = {
 export type Auth = {
     access_token: string;
     token_type: string;
-};
+}
 
 export type ApiUrls = {
     broodURL: string;
     spireURL: string;
-} 
+}
 
 export type Options = {
     apiUrls: ApiUrls;
+    token?: string;
+    clientID?: string;
 }
 
 export type ApiStatus = {
