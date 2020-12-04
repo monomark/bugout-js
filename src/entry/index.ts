@@ -1,13 +1,13 @@
 import {Entry, EntryMutable} from './type'
 import {EntryAPI} from './interface'
 import {AxiosInstance} from 'axios'
-import {ActionResponse} from '../user/interface'
+import {Response} from '../user/interface'
 
 const getEntry = async (
     spireClient: AxiosInstance,
     journalId: string,
     entryId: string, 
-): Promise<ActionResponse<Entry>> => {
+): Promise<Response<Entry>> => {
     try { 
         const entryResponse = await spireClient.get<Entry>(`/journals/${journalId}/entries/${entryId}`)
         return {data: entryResponse.data}
@@ -24,7 +24,7 @@ const createEntry = async (
     spireClient: AxiosInstance,
     journalId: string,
     entryData: EntryMutable
-):Promise<ActionResponse<Entry>> => {
+):Promise<Response<Entry>> => {
     try { 
         const entryResponse = await spireClient.post<Entry>(`/journals/${journalId}/entries`, entryData)
         return {data: entryResponse.data}
@@ -41,7 +41,7 @@ const updateEntry = async (
     journalId: string,
     entryId: string, 
     entryData: EntryMutable
-): Promise<ActionResponse<Entry>> => {
+): Promise<Response<Entry>> => {
     try { 
         const entryResponse = await spireClient.put<Entry>(`/journals/${journalId}/entries/${entryId}`, entryData)
         return {data: entryResponse.data}
@@ -57,7 +57,7 @@ const deleteEntry = async (
     spireClient: AxiosInstance,
     journalId: string,
     entryId: string, 
-): Promise<ActionResponse<Entry>> => {
+): Promise<Response<Entry>> => {
     try { 
         const entryResponse = await spireClient.delete<Entry>(`/journals/${journalId}/entries/${entryId}`)
         return {data: entryResponse.data}
@@ -72,7 +72,7 @@ const deleteEntry = async (
 const getEntriesByJournal = async (
     spireClient: AxiosInstance, 
     journalId: string,
-): Promise<ActionResponse<Entry[]>> => {
+): Promise<Response<Entry[]>> => {
     try {
         const entriesResponse = await spireClient.get<{entries: Entry[]}>(`/journals/${journalId}/entries`)
         return {data: entriesResponse.data.entries}
@@ -88,7 +88,7 @@ const searchEntriesByJournal = async (
     spireClient: AxiosInstance, 
     journalId:  string,
     query: string
-): Promise<ActionResponse<Entry[]>> => {
+): Promise<Response<Entry[]>> => {
     try { 
         const entriesResponse = await spireClient.get<Entry[]>(`/journals/${journalId}/search?q=${query}`)
         return {data: entriesResponse.data}

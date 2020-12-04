@@ -1,14 +1,14 @@
 import {AxiosInstance} from 'axios'
 import {Tag, TagDescription} from './type'
 import {TagAPI} from './interface'
-import {ActionResponse} from '../user/interface'
+import {Response} from '../user/interface'
 
 export const createTags = async (
     spireClient: AxiosInstance, 
     journalId: string,
     entryId: string,
     tagName: string[],
-): Promise<ActionResponse<Tag[]>> =>{
+): Promise<Response<Tag[]>> =>{
     try { 
         const tagResponse = await spireClient.post<string[]>(`/journals/${journalId}/entries/${entryId}/tags`, {tags: tagName})
         return {data: tagResponse.data.map(tag => ({name: tag}))}
@@ -24,7 +24,7 @@ export const getTags = async (
     spireClient: AxiosInstance, 
     journalId: string,
     entryId: string,
-): Promise<ActionResponse<TagDescription>> =>{
+): Promise<Response<TagDescription>> =>{
     try { 
         const tagResponse = await spireClient.get<TagDescription>(`/journals/${journalId}/entries/${entryId}/tags`)
         return {data: tagResponse.data}
@@ -42,7 +42,7 @@ export const deleteTags = async (
     journalId: string,
     entryId: string,
     tagName: string,
-): Promise<ActionResponse<TagDescription>> =>{
+): Promise<Response<TagDescription>> =>{
     try { 
         const tagResponse = await spireClient.request<TagDescription>({
             method: 'DELETE',

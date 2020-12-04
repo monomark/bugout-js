@@ -1,8 +1,8 @@
 import {Journal} from './type'
-import {ActionResponse} from '../user/interface'
+import {Response} from '../user/interface'
 
 export interface JournalsAPI {
-    getAllJournals(): Promise<ActionResponse<Journal[]>>, 
-    createJournal(name: string): Promise<ActionResponse<Journal>>,
-    deleteJournal(id: string): Promise<ActionResponse<Journal>>,
+    getAllJournals(): Promise<Response<Journal[]>>, 
+    createJournal(name: string): Promise<Response<Journal>>,
+    deleteJournal(id: string): Promise<Response<Journal>>,
 }
