@@ -1,7 +1,7 @@
 import {AxiosInstance} from 'axios'
-import {Tag, TagDescription} from './type'
-import {TagAPI} from './interface'
-import {Response} from '../user/interface'
+import {Tag, TagDescription} from '../types'
+import {TagAPI} from '../interfaces'
+import {Response} from '../interfaces'
 
 export const createTags = async (
     spireClient: AxiosInstance, 

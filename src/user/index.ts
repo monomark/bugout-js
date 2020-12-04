@@ -2,7 +2,7 @@ import { AxiosInstance } from 'axios'
 import createJournalsAPI from '../journal'
 import createEntryAPI from '../entry'
 import createTagAPI from '../tag'
-import {UserApi} from './interface'
+import {UserApi} from '../interfaces'
 
 const createUserAPI = (spireClient: AxiosInstance): UserApi => (
     {

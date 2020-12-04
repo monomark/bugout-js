@@ -1,7 +1,7 @@
 import {BROODURL, SPIREURL} from './constants'
 import Client from './client'
-import ClientInterface from "./client/interface";
-import {Options} from './client/types'
+import {ClientInterface} from "./interfaces";
+import {Options} from './types'
 
 
 const module = (

@@ -1,7 +1,7 @@
-import {Entry, EntryMutable} from './type'
-import {EntryAPI} from './interface'
+import {Entry, EntryMutable} from '../types'
+import {EntryAPI} from '../interfaces'
 import {AxiosInstance} from 'axios'
-import {Response} from '../user/interface'
+import {Response} from '../interfaces'
 
 const getEntry = async (
     spireClient: AxiosInstance,

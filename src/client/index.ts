@@ -1,9 +1,14 @@
 import axios, {AxiosInstance} from 'axios'
 import * as querystring from 'querystring'
-import {User, Pong, Options, Auth} from './types'
-import ClientInterface from './interface'
 import createUserAPI from '../user'
 import {handleError} from './helper'
+import {ClientInterface} from '../interfaces'
+import {
+    Options,
+    Pong,
+    User,
+    Auth,
+} from '../types'
 
 
 const BugoutClient = (
@@ -61,7 +66,6 @@ const BugoutClient = (
 
         try {
             const verificationResponse = await broodClient.post<User>('/confirm');
-            // this.personalInfo = verificationResponse.data
             return verificationResponse.data
         }
         catch (e) {

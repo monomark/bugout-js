@@ -1,7 +1,7 @@
 import {AxiosInstance} from 'axios'
-import {Journal} from './type'
-import {JournalsAPI} from './interface'
-import {Response} from '../user/interface'
+import {Journal} from '../types'
+import {JournalsAPI} from '../interfaces'
+import {Response} from '../interfaces'
 
 const getAllJournals = async (
     spireClient: AxiosInstance, 
