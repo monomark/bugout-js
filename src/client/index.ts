@@ -1,7 +1,7 @@
 import axios, { AxiosInstance } from 'axios'
 import * as querystring from 'querystring'
-import createUserAPI from '../user'
-import { handleError } from './helper'
+import createUserAPI from './createUserAPI'
+import { handleError } from './helpers'
 import { ClientInterface } from '../interfaces'
 import {
     Options,
@@ -39,6 +39,7 @@ const BugoutClient = (
             },
         }
     }
+
     const createUser = async (
         email: string,
         username: string,
@@ -50,17 +51,19 @@ const BugoutClient = (
             password,
         }).toString()
         try {
-            const userResponse = await broodClient.post<User>('/user', registrationForm)
+            const response = await broodClient.post<User>('/user', registrationForm)
 
-            return userResponse.data
+            return response.data
         } catch (e) {
             throw e.response.data
         }
     }
+
     const verify = async (): Promise<User> => {
         try {
-            const verificationResponse = await broodClient.post<User>('/confirm')
-            return verificationResponse.data
+            const response = await broodClient.post<User>('/confirm')
+
+            return response.data
         } catch (e) {
             if (e.response.status === 401) {
                 throw 'Set token first'
@@ -69,6 +72,7 @@ const BugoutClient = (
             }
         }
     }
+
     const login = async (username: string, password: string): Promise<Auth> => {
         const loginUser = querystring.stringify({
             username,
@@ -76,10 +80,11 @@ const BugoutClient = (
         }).toString()
 
         try {
-            const authInfoResponse = await broodClient.post<Auth>('/token', loginUser)
-            broodClient.defaults.headers.authorization = `Bearer ${authInfoResponse.data.access_token}`
-            spireClient.defaults.headers.authorization = `Bearer ${authInfoResponse.data.access_token}`
-            return authInfoResponse.data
+            const response = await broodClient.post<Auth>('/token', loginUser)
+            broodClient.defaults.headers.authorization = `Bearer ${response.data.access_token}`
+            spireClient.defaults.headers.authorization = `Bearer ${response.data.access_token}`
+
+            return response.data
         } catch (e) {
             throw e.response.data
         }
